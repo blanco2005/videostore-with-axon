@@ -34,14 +34,6 @@ public class MovieController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/movies/{serialNumber}/history")
-    public ResponseEntity<String> movieHistory(@PathVariable("serialNumber") String serialNumber) {
-
-        List<Object> movieHistory = movieService.getMovieHistory(serialNumber);
-        String result = movieHistory.stream().map(h -> h.toString()).collect(Collectors.joining("\n"));
-        return ResponseEntity.ok(result);
-    }
-
     @ExceptionHandler
     public ResponseEntity<String> handle(RuntimeException e) {
         return new ResponseEntity<String>("Some problem: " + e.getMessage(), HttpStatus.NOT_FOUND);
