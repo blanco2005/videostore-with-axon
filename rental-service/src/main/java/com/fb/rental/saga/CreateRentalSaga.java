@@ -52,7 +52,7 @@ public class CreateRentalSaga {
     public void on (MovieRentalRejectedEvent event) {
         logger.info("Received MovieRentalRejectedEvent...");
         logger.info("I will ask to reject the order");
-        commandGateway.send(new RejectRentalCommand(customer));
+        commandGateway.send(new RejectRentalCommand(rentalId));
     }
 
     @SagaEventHandler(associationProperty = "customerName")
