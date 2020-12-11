@@ -8,4 +8,9 @@ public class AxonRentalService implements RentalService {
     public void createRental(String serialNumber, String customer) {
 
     }
+
+    @Override
+    public void returnMovie(String serialNumber) {
+
+    }
 }
