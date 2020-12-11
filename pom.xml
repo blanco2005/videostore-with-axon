@@ -12,6 +12,7 @@
         <module>core-api</module>
         <module>customer-service</module>
         <module>movie-service</module>
+        <module>order-service</module>
     </modules>
 
 
