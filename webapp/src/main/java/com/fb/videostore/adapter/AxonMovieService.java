@@ -1,16 +1,24 @@
 package com.fb.videostore.adapter;
 
+import com.fb.query.movie.MovieSummary;
+import com.fb.videostore.AllMovieSummaryQuery;
 import com.fb.videostore.RegisterMovieCommand;
 import com.fb.videostore.service.MovieService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class AxonMovieService implements MovieService {
 
     @Autowired
     private CommandGateway commandGateway;
+
+    @Autowired
+    private QueryGateway queryGateway;
 
     @Override
     public void register(String serialNumber, String title) {
@@ -18,12 +26,13 @@ public class AxonMovieService implements MovieService {
     }
 
     @Override
-    public List<Object> getAllMovieAvailability() {
-        return null;
+    public List<MovieSummary> getAllMoviesSummary() {
+        try {
+            return queryGateway.query(new AllMovieSummaryQuery(), ResponseTypes.multipleInstancesOf(MovieSummary.class)).get();
+        } catch (Exception e) {
+            throw new RuntimeException("Future problem");
+        }
     }
 
-    @Override
-    public List<Object> getMovieHistory(String serialNumber) {
-        return null;
-    }
+
 }

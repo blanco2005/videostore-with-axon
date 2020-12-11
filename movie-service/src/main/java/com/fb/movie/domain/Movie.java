@@ -35,7 +35,7 @@ public class Movie {
         if (!isAvailable) {
             throw new RuntimeException("Movie already rented!");
         }
-        apply(new MovieRentedEvent(command.getSerialNumber()));
+        apply(new MovieRentedEvent(command.getSerialNumber(), title));
     }
 
     @EventSourcingHandler
@@ -45,7 +45,7 @@ public class Movie {
 
     @CommandHandler
     public void handle(ReturnMovieCommand command) {
-        apply(new MovieReturnedEvent(command.getSerialNumber()));
+        apply(new MovieReturnedEvent(command.getSerialNumber(), title));
     }
 
     @EventSourcingHandler

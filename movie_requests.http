@@ -12,3 +12,13 @@ Accept: application/json
 PUT http://localhost:8081/movies/666?title=Startrek
 Accept: application/json
 
+###
+
+GET http://localhost:8081/movies/
+Accept: application/json
+
+###
+
+PUT http://localhost:8081/movies/999?title=Startrek
+Accept: application/json
+
