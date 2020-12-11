@@ -14,6 +14,7 @@
         <module>movie-service</module>
         <module>order-service</module>
         <module>query-service</module>
+        <module>webapp</module>
     </modules>
 
 
