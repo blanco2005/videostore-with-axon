@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.*;
 
 @RestController
 public class MovieController {
@@ -30,12 +31,12 @@ public class MovieController {
     @GetMapping("/movies")
     public ResponseEntity<String> moviesAvailability() {
         List<Object> allMovieAvailability = movieService.getAllMovieAvailability();
-        String result = allMovieAvailability.stream().map(m -> m.toString()).collect(Collectors.joining("\n"));
+        String result = allMovieAvailability.stream().map(m -> m.toString()).collect(joining("\n"));
         return ResponseEntity.ok(result);
     }
 
     @ExceptionHandler
     public ResponseEntity<String> handle(RuntimeException e) {
-        return new ResponseEntity<String>("Some problem: " + e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Some problem: " + e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
