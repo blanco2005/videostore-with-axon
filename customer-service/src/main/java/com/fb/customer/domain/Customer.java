@@ -17,6 +17,9 @@ public class Customer {
     private String customerName;
     private int numberOfOngoingRentals;
 
+    public Customer() {
+
+    }
     @CommandHandler
     public Customer(CreateCustomerCommand command) {
         apply(new CustomerCreatedEvent(command.getCustomerName()));

@@ -18,7 +18,19 @@ data class RequestRentalCommand(@TargetAggregateIdentifier val customerName: Str
 data class CustomerRentalApprovedEvent(val customerName: String)
 
 data class DecreaseRentalsCommand(@TargetAggregateIdentifier val customerName: String)
-data class CustomerDecreasedRentalsEvent(@TargetAggregateIdentifier val customerName: String)
+data class CustomerDecreasedRentalsEvent(val customerName: String)
+
+data class CreateRentalCommand(@TargetAggregateIdentifier val rentalId: String, val customer: String, val movie: String)
+data class RentalCreatedEvent(val rentalId: String, val customer: String, val movie: String)
+
+data class ApproveRentalCommand(@TargetAggregateIdentifier val rentalId: String)
+data class RentalApprovedEvent(val rentalId: String)
+
+data class RejectRentalCommand(@TargetAggregateIdentifier val rentalId: String)
+data class RentalRejectedEvent(val rentalId: String)
+
+data class TerminateRentalCommand(@TargetAggregateIdentifier val rentalId: String)
+data class RentalTerminatedEvent(val rentalId: String)
 
 // QUERIES
 
