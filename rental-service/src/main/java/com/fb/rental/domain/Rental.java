@@ -36,7 +36,7 @@ public class Rental {
 
     @CommandHandler
     public void handle(ApproveRentalCommand command) {
-        apply(new RentalApprovedEvent(command.getRentalId()));
+        apply(new RentalApprovedEvent(command.getRentalId(), movie, customer));
     }
 
     @EventSourcingHandler

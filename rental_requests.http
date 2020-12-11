@@ -3,4 +3,19 @@ Accept: application/json
 
 ###
 
+GET http://localhost:8081/rentals
+Accept: application/json
+
+###
+POST http://localhost:8081/movies/333/rent?customer=andrea
+Accept: application/json
+
+###
+POST http://localhost:8081/movies/666/rent?customer=andrea
+Accept: application/json
+
+
+
+
+
 

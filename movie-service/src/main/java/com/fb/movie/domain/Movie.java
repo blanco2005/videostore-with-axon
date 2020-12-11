@@ -11,52 +11,47 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 @Aggregate
 public class Movie {
 
-    @AggregateIdentifier
-    private String serialNumber;
+  @AggregateIdentifier private String serialNumber;
 
-    private String title;
+  private String title;
 
-    private boolean isAvailable;
+  private boolean isAvailable;
 
-    public Movie() {
+  public Movie() {}
+
+  @CommandHandler
+  public Movie(RegisterMovieCommand command) {
+    apply(new MovieRegisteredEvent(command.getSerialNumber(), command.getTitle()));
+  }
+
+  @EventSourcingHandler
+  public void on(MovieRegisteredEvent event) {
+    this.serialNumber = event.getSerialNumber();
+    this.title = event.getTitle();
+    this.isAvailable = true;
+  }
+
+  @CommandHandler
+  public void handle(RentMovieCommand command) {
+    if (!isAvailable) {
+      apply(new MovieRentalRejectedEvent(command.getSerialNumber()));
+    } else {
+      apply(new MovieRentedEvent(command.getSerialNumber(), title));
     }
+  }
 
-    @CommandHandler
-    public Movie(RegisterMovieCommand command) {
-        apply(new MovieRegisteredEvent(command.getSerialNumber(), command.getTitle()));
-    }
+  @EventSourcingHandler
+  public void on(MovieRentedEvent event) {
+    isAvailable = false;
+  }
 
-    @EventSourcingHandler
-    public void on(MovieRegisteredEvent event) {
-        this.serialNumber = event.getSerialNumber();
-        this.title = event.getTitle();
-        this.isAvailable = true;
-    }
+  @CommandHandler
+  public void handle(ReturnMovieCommand command) {
+    apply(new MovieReturnedEvent(command.getSerialNumber(), title));
+  }
 
-    @CommandHandler
-    public void handle(RentMovieCommand command) {
-        if (!isAvailable) {
-            throw new RuntimeException("Movie already rented!");
-        }
-        apply(new MovieRentedEvent(command.getSerialNumber(), title));
-    }
-
-    @EventSourcingHandler
-    public void on(MovieRentedEvent event) {
-        isAvailable = false;
-    }
-
-    @CommandHandler
-    public void handle(ReturnMovieCommand command) {
-        apply(new MovieReturnedEvent(command.getSerialNumber(), title));
-    }
-
-    @EventSourcingHandler
-    public void on(MovieReturnedEvent event) {
-        isAvailable = true;
-    }
-
-
-
-
+  @EventSourcingHandler
+  public void on(MovieReturnedEvent event) {
+    isAvailable = true;
+  }
 }

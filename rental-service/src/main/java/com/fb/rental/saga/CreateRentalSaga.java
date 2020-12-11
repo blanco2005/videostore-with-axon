@@ -22,6 +22,7 @@ public class CreateRentalSaga {
 
     private String customer;
     private String rentalId;
+    private String serialNumber;
 
     @StartSaga
     @SagaEventHandler(associationProperty = "rentalId")
@@ -31,18 +32,27 @@ public class CreateRentalSaga {
 
         this.customer = event.getCustomer();
         this.rentalId = event.getRentalId();
+        this.serialNumber = event.getMovie();
 
         SagaLifecycle.associateWith("serialNumber", event.getMovie());
         SagaLifecycle.associateWith("customerName", event.getCustomer());
+        SagaLifecycle.associateWith("rentalId", event.getRentalId());
 
         commandGateway.send(new RentMovieCommand(event.getMovie()));
     }
 
     @SagaEventHandler(associationProperty = "serialNumber")
     public void on (MovieRentedEvent event) {
-        logger.info("Received MovieRenteEvent...");
+        logger.info("Received MovieRentedEvent...");
         logger.info("I will ask request to rent to customer");
         commandGateway.send(new RequestRentalToCustomerCommand(customer));
+    }
+
+    @SagaEventHandler(associationProperty = "serialNumber")
+    public void on (MovieRentalRejectedEvent event) {
+        logger.info("Received MovieRentalRejectedEvent...");
+        logger.info("I will ask to reject the order");
+        commandGateway.send(new RejectRentalCommand(customer));
     }
 
     @SagaEventHandler(associationProperty = "customerName")
@@ -51,6 +61,27 @@ public class CreateRentalSaga {
         logger.info("I will ask to confirm the rental");
         commandGateway.send(new ApproveRentalCommand(rentalId));
     }
+
+    @SagaEventHandler(associationProperty = "customerName")
+    public void on (CustomerRentalRejectedEvent event) {
+        logger.info("Received CustomerRejectedEvent...");
+        logger.info("I will ask to make the movie available again (COMPENSATING TRANSACTION");
+        commandGateway.send(new ReturnMovieCommand(serialNumber));
+    }
+
+    @SagaEventHandler(associationProperty = "serialNumber")
+    public void on (MovieReturnedEvent event) {
+        logger.info("Received MovieReturnedEvent...");
+        logger.info("I will ask to reject the rental");
+        commandGateway.send(new RejectRentalCommand(rentalId));
+    }
+
+    @SagaEventHandler(associationProperty = "rentalId")
+    public void on (RentalRejectedEvent event) {
+        logger.info("Received RentalRejectedEvent...terminating saga");
+        end();
+    }
+
 
     @SagaEventHandler(associationProperty = "rentalId")
     public void on(RentalApprovedEvent event) {

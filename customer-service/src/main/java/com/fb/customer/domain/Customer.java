@@ -34,9 +34,11 @@ public class Customer {
     @CommandHandler
     public void handle(RequestRentalToCustomerCommand command) {
         if (numberOfOngoingRentals == MAX_NUMBER_OF_RENTALS) {
-            throw new RuntimeException("Rental rejected for customer " + customerName);
+            apply(new CustomerRentalRejectedEvent(customerName));
         }
-        apply(new CustomerRentalApprovedEvent(customerName));
+        else {
+            apply(new CustomerRentalApprovedEvent(customerName));
+        }
     }
 
     @EventSourcingHandler
