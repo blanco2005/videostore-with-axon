@@ -1,11 +1,10 @@
 package com.fb.videostore.controller;
 
+import com.fb.query.customer.CustomerSummary;
 import com.fb.videostore.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +27,14 @@ public class CustomerController {
 
     @GetMapping("/customers")
     public ResponseEntity<String> getCustomers() {
-        List<Object> customers = customerService.getCustomers();
+        List<CustomerSummary> customers = customerService.getCustomers();
         String result = customers.stream().map(c -> c.toString()).collect(joining("\n"));
         return ResponseEntity.ok(result);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handle(RuntimeException e) {
+        return new ResponseEntity<>("Some problem: " + e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
