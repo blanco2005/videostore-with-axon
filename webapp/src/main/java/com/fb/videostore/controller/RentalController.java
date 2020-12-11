@@ -1,6 +1,7 @@
 package com.fb.videostore.controller;
 
 import com.fb.videostore.service.RentalService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,10 @@ public class RentalController {
 
         rentalService.returnMovie(serialNumber);
         return ResponseEntity.ok(format("Movie with sn %s returned", serialNumber));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handle(RuntimeException e) {
+        return new ResponseEntity<>("Some problem: " + e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

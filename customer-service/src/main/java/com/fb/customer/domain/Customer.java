@@ -18,8 +18,8 @@ public class Customer {
     private int numberOfOngoingRentals;
 
     public Customer() {
-
     }
+
     @CommandHandler
     public Customer(CreateCustomerCommand command) {
         apply(new CustomerCreatedEvent(command.getCustomerName()));
@@ -32,7 +32,7 @@ public class Customer {
     }
 
     @CommandHandler
-    public void handle(RequestRentalCommand command) {
+    public void handle(RequestRentalToCustomerCommand command) {
         if (numberOfOngoingRentals == MAX_NUMBER_OF_RENTALS) {
             throw new RuntimeException("Rental rejected for customer " + customerName);
         }

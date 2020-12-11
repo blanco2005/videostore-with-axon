@@ -18,6 +18,9 @@ public class Movie {
 
     private boolean isAvailable;
 
+    public Movie() {
+    }
+
     @CommandHandler
     public Movie(RegisterMovieCommand command) {
         apply(new MovieRegisteredEvent(command.getSerialNumber(), command.getTitle()));
