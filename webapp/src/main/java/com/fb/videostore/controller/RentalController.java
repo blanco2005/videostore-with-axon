@@ -1,11 +1,16 @@
 package com.fb.videostore.controller;
 
+import com.fb.query.movie.MovieSummary;
+import com.fb.query.rental.RentalSummary;
 import com.fb.videostore.service.RentalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
 
 @RestController
 public class RentalController {
@@ -30,6 +35,13 @@ public class RentalController {
 
         rentalService.returnMovie(serialNumber);
         return ResponseEntity.ok(format("Movie with sn %s returned", serialNumber));
+    }
+
+    @GetMapping("/rentals")
+    public ResponseEntity<String> currentRentals() {
+        List<RentalSummary> ongoingRentals = rentalService.getOngoingRentals();
+        String result = ongoingRentals.stream().map(m -> m.toString()).collect(joining("\n"));
+        return ResponseEntity.ok(result);
     }
 
     @ExceptionHandler

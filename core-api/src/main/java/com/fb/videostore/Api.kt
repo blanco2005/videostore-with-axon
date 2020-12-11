@@ -24,7 +24,7 @@ data class CreateRentalCommand(@TargetAggregateIdentifier val rentalId: String, 
 data class RentalCreatedEvent(val rentalId: String, val customer: String, val movie: String)
 
 data class ApproveRentalCommand(@TargetAggregateIdentifier val rentalId: String)
-data class RentalApprovedEvent(val rentalId: String)
+data class RentalApprovedEvent(val rentalId: String, val movie: String, val customer: String)
 
 data class RejectRentalCommand(@TargetAggregateIdentifier val rentalId: String)
 data class RentalRejectedEvent(val rentalId: String)
@@ -36,4 +36,5 @@ data class RentalTerminatedEvent(val rentalId: String)
 
 class AllMovieSummaryQuery
 class AllCustomersSummaryQuery
+class OngoingRentalsQuery
 

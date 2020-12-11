@@ -1,6 +1,5 @@
 package com.fb.videostore.controller;
 
-import com.fb.movie.domain.Movie;
 import com.fb.query.movie.MovieSummary;
 import com.fb.videostore.service.MovieService;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.joining;
 
 @RestController
 public class MovieController {
@@ -31,8 +30,8 @@ public class MovieController {
 
     @GetMapping("/movies")
     public ResponseEntity<String> moviesAvailability() {
-        List<MovieSummary> allMovieAvailability = movieService.getAllMoviesSummary();
-        String result = allMovieAvailability.stream().map(m -> m.toString()).collect(joining("\n"));
+        List<MovieSummary> movies = movieService.getAllMoviesSummary();
+        String result = movies.stream().map(m -> m.toString()).collect(joining("\n"));
         return ResponseEntity.ok(result);
     }
 
