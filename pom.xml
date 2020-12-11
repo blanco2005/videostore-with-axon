@@ -13,6 +13,7 @@
         <module>customer-service</module>
         <module>movie-service</module>
         <module>order-service</module>
+        <module>query-service</module>
     </modules>
 
 
