@@ -1,0 +1,14 @@
+
+PUT http://localhost:8081/movies/123?title=Avengers
+Accept: application/json
+
+###
+
+PUT http://localhost:8081/movies/333?title=Batman
+Accept: application/json
+
+###
+
+PUT http://localhost:8081/movies/666?title=Startrek
+Accept: application/json
+

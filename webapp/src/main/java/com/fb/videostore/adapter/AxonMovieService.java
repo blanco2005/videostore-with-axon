@@ -14,7 +14,7 @@ public class AxonMovieService implements MovieService {
 
     @Override
     public void register(String serialNumber, String title) {
-        commandGateway.send(new RegisterMovieCommand(serialNumber, title));
+        commandGateway.sendAndWait(new RegisterMovieCommand(serialNumber, title));
     }
 
     @Override
