@@ -12,7 +12,7 @@
         <module>core-api</module>
         <module>customer-service</module>
         <module>movie-service</module>
-        <module>order-service</module>
+        <module>rental-service</module>
         <module>query-service</module>
         <module>webapp</module>
     </modules>
