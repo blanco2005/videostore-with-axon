@@ -1,0 +1,20 @@
+
+PUT http://localhost:8081/customers/andrea
+Accept: application/json
+
+###
+
+PUT http://localhost:8081/customers/fabio
+Accept: application/json
+
+###
+
+PUT http://localhost:8081/customers/fabrizio
+Accept: application/json
+
+
+###
+
+GET http://localhost:8081/customers/
+Accept: application/json
+
