@@ -1,4 +1,4 @@
-package com.fb.query.rental;
+package com.fb.query.rental.summary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.fb.query.rental;
+package com.fb.query.rental.summary;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

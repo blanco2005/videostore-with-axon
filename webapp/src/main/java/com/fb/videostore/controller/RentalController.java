@@ -1,7 +1,6 @@
 package com.fb.videostore.controller;
 
-import com.fb.query.movie.MovieSummary;
-import com.fb.query.rental.RentalSummary;
+import com.fb.query.rental.summary.RentalSummary;
 import com.fb.videostore.service.RentalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 public class RentalController {
@@ -25,8 +25,8 @@ public class RentalController {
     public ResponseEntity<String> rent(@PathVariable("serialNumber") String serialNumber,
                                        @RequestParam("customer") String customer) {
 
-        rentalService.createRental(serialNumber, customer);
-        return ResponseEntity.ok(format("Movie with sn %s rented to %s", serialNumber, customer));
+        String rentalId = rentalService.createRental(serialNumber, customer);
+        return ok(format("Requested creation of rental %s ", rentalId));
     }
 
     @PostMapping("/movies/{serialNumber}/return")
@@ -34,14 +34,19 @@ public class RentalController {
                                        @RequestParam("customer") String customer) {
 
         rentalService.returnMovie(serialNumber);
-        return ResponseEntity.ok(format("Movie with sn %s returned", serialNumber));
+        return ok(format("Movie with sn %s returned", serialNumber));
     }
 
     @GetMapping("/rentals")
     public ResponseEntity<String> currentRentals() {
         List<RentalSummary> ongoingRentals = rentalService.getOngoingRentals();
         String result = ongoingRentals.stream().map(m -> m.toString()).collect(joining("\n"));
-        return ResponseEntity.ok(result);
+        return ok(result);
+    }
+
+    @GetMapping("/rentals/{rentalId}/status")
+    public ResponseEntity<String> rentalStatus(@PathVariable("rentalId") String rentalId) {
+        return ok(rentalService.getRentalStatus(rentalId).getStatus());
     }
 
     @ExceptionHandler

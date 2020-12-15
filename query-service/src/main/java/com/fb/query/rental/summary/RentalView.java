@@ -1,4 +1,4 @@
-package com.fb.query.rental;
+package com.fb.query.rental.summary;
 
 import com.fb.videostore.OngoingRentalsQuery;
 import com.fb.videostore.RentalApprovedEvent;

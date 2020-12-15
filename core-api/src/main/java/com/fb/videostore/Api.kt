@@ -40,4 +40,4 @@ data class CustomerRentalRejectedEvent(val customerName: String)
 class AllMovieSummaryQuery
 class AllCustomersSummaryQuery
 class OngoingRentalsQuery
-
+data class RentalStatusQuery(val rentalId: String)

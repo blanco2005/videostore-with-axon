@@ -1,16 +1,19 @@
 package com.fb.videostore.adapter;
 
-import com.fb.query.rental.RentalSummary;
+import com.fb.query.rental.status.RentalStatus;
+import com.fb.query.rental.summary.RentalSummary;
 import com.fb.videostore.CreateRentalCommand;
 import com.fb.videostore.OngoingRentalsQuery;
+import com.fb.videostore.RentalStatusQuery;
 import com.fb.videostore.service.RentalService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.axonframework.messaging.responsetypes.ResponseTypes.*;
 
 public class AxonRentalService implements RentalService {
 
@@ -20,8 +23,10 @@ public class AxonRentalService implements RentalService {
     private QueryGateway queryGateway;
 
     @Override
-    public void createRental(String serialNumber, String customer) {
-        commandGateway.sendAndWait(new CreateRentalCommand(UUID.randomUUID().toString(), customer, serialNumber));
+    public String createRental(String serialNumber, String customer) {
+        String rentalId = UUID.randomUUID().toString();
+        commandGateway.sendAndWait(new CreateRentalCommand(rentalId, customer, serialNumber));
+        return rentalId;
     }
 
     @Override
@@ -32,7 +37,16 @@ public class AxonRentalService implements RentalService {
     @Override
     public List<RentalSummary> getOngoingRentals() {
         try {
-            return queryGateway.query(new OngoingRentalsQuery(), ResponseTypes.multipleInstancesOf(RentalSummary.class)).get();
+            return queryGateway.query(new OngoingRentalsQuery(), multipleInstancesOf(RentalSummary.class)).get();
+        } catch (Exception e) {
+            throw new RuntimeException("Future problem");
+        }
+    }
+
+    @Override
+    public RentalStatus getRentalStatus(String rentalId) {
+        try {
+            return queryGateway.query(new RentalStatusQuery(rentalId), instanceOf(RentalStatus.class)).get();
         } catch (Exception e) {
             throw new RuntimeException("Future problem");
         }
