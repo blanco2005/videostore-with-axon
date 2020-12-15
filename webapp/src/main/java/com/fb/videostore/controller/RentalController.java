@@ -30,8 +30,7 @@ public class RentalController {
     }
 
     @PostMapping("/movies/{serialNumber}/return")
-    public ResponseEntity<String> returnMovie(@PathVariable("serialNumber") String serialNumber,
-                                       @RequestParam("customer") String customer) {
+    public ResponseEntity<String> returnMovie(@PathVariable("serialNumber") String serialNumber) {
 
         rentalService.returnMovie(serialNumber);
         return ok(format("Movie with sn %s returned", serialNumber));

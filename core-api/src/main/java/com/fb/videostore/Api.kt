@@ -31,7 +31,7 @@ data class RejectRentalCommand(@TargetAggregateIdentifier val rentalId: String)
 data class RentalRejectedEvent(val rentalId: String)
 
 data class TerminateRentalCommand(@TargetAggregateIdentifier val rentalId: String)
-data class RentalTerminatedEvent(val rentalId: String)
+data class RentalTerminatedEvent(val rentalId: String, val customer: String, val movie: String)
 
 data class CustomerRentalRejectedEvent(val customerName: String)
 
@@ -41,3 +41,4 @@ class AllMovieSummaryQuery
 class AllCustomersSummaryQuery
 class OngoingRentalsQuery
 data class RentalStatusQuery(val rentalId: String)
+data class RentalIdByMovieSerialNumber(val serialNumber: String)

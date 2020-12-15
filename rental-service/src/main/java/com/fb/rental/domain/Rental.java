@@ -46,7 +46,7 @@ public class Rental {
 
     @CommandHandler
     public void handle(TerminateRentalCommand command) {
-        apply(new RentalTerminatedEvent(command.getRentalId()));
+        apply(new RentalTerminatedEvent(command.getRentalId(), customer, movie));
     }
 
     @EventSourcingHandler

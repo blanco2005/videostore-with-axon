@@ -2,6 +2,7 @@ package com.fb.query.rental.summary;
 
 import com.fb.videostore.OngoingRentalsQuery;
 import com.fb.videostore.RentalApprovedEvent;
+import com.fb.videostore.RentalIdByMovieSerialNumber;
 import com.fb.videostore.RentalTerminatedEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -32,5 +33,10 @@ public class RentalView {
     @QueryHandler
     public List<RentalSummary> on(OngoingRentalsQuery query) {
         return rentalSummaryRepository.findAll();
+    }
+
+    @QueryHandler
+    public String on(RentalIdByMovieSerialNumber query) {
+        return rentalSummaryRepository.findByMovie(query.getSerialNumber()).getRentalId();
     }
 }

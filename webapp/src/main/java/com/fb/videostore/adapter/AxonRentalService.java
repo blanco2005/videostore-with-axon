@@ -2,9 +2,7 @@ package com.fb.videostore.adapter;
 
 import com.fb.query.rental.status.RentalStatus;
 import com.fb.query.rental.summary.RentalSummary;
-import com.fb.videostore.CreateRentalCommand;
-import com.fb.videostore.OngoingRentalsQuery;
-import com.fb.videostore.RentalStatusQuery;
+import com.fb.videostore.*;
 import com.fb.videostore.service.RentalService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static org.axonframework.messaging.responsetypes.ResponseTypes.*;
 
@@ -31,7 +30,12 @@ public class AxonRentalService implements RentalService {
 
     @Override
     public void returnMovie(String serialNumber) {
-
+        try {
+            String rentalId = queryGateway.query(new RentalIdByMovieSerialNumber(serialNumber), instanceOf(String.class)).get();
+            commandGateway.send(new TerminateRentalCommand(rentalId));
+        } catch (Exception e) {
+            throw new RuntimeException("Future problem");
+        }
     }
 
     @Override

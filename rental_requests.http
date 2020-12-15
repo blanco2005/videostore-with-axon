@@ -19,8 +19,14 @@ POST http://localhost:8081/movies/123/rent?customer=fabio
 Accept: application/json
 
 ###
-GET http://localhost:8081/rentals/f89fcbb2-4682-4a8b-b0ba-11d614f4962a/status
+GET http://localhost:8081/rentals/ef39f625-685a-453e-a795-f69a8dccfd55/status
 Accept: application/json
+
+###
+POST http://localhost:8081/movies/123/return
+Accept: application/json
+
+
 
 
 
