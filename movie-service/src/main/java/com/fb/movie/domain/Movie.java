@@ -34,10 +34,9 @@ public class Movie {
   @CommandHandler
   public void handle(RentMovieCommand command) {
     if (!isAvailable) {
-      apply(new MovieRentalRejectedEvent(command.getSerialNumber()));
-    } else {
-      apply(new MovieRentedEvent(command.getSerialNumber(), title));
+      throw new RuntimeException("Movie " + command.getSerialNumber() + " is not available for renting");
     }
+    apply(new MovieRentedEvent(command.getSerialNumber(), title));
   }
 
   @EventSourcingHandler

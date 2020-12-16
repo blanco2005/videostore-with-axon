@@ -34,11 +34,9 @@ public class Customer {
     @CommandHandler
     public void handle(RequestRentalToCustomerCommand command) {
         if (numberOfOngoingRentals == MAX_NUMBER_OF_RENTALS) {
-            apply(new CustomerRentalRejectedEvent(customerName));
+            throw new RuntimeException("Customer " + command.getCustomerName() + " has reached max number of rentals");
         }
-        else {
-            apply(new CustomerRentalApprovedEvent(customerName));
-        }
+        apply(new CustomerRentalApprovedEvent(customerName));
     }
 
     @EventSourcingHandler

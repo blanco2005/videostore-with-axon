@@ -2,6 +2,8 @@ package com.fb.rental.saga;
 
 import com.fb.videostore.*;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.eventhandling.EventBus;
+import org.axonframework.eventhandling.gateway.EventGateway;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 import static org.axonframework.modelling.saga.SagaLifecycle.end;
 
 @Saga
@@ -19,6 +22,9 @@ public class CreateRentalSaga {
 
     @Autowired
     private transient CommandGateway commandGateway;
+
+    @Autowired
+    private transient EventGateway eventGateway;
 
     private String customer;
     private String rentalId;
@@ -38,14 +44,23 @@ public class CreateRentalSaga {
         SagaLifecycle.associateWith("customerName", event.getCustomer());
         SagaLifecycle.associateWith("rentalId", event.getRentalId());
 
-        commandGateway.send(new RentMovieCommand(event.getMovie()));
+        commandGateway.send(new RentMovieCommand(event.getMovie()), (msg, result) -> {
+            if (result.isExceptional()) {
+                eventGateway.publish(new MovieRentalRejectedEvent(event.getMovie()));
+            }
+        });
     }
 
     @SagaEventHandler(associationProperty = "serialNumber")
     public void on (MovieRentedEvent event) {
         logger.info("Received MovieRentedEvent...");
         logger.info("I will ask request to rent to customer");
-        commandGateway.send(new RequestRentalToCustomerCommand(customer));
+
+        commandGateway.send(new RequestRentalToCustomerCommand(customer), (msg, result) -> {
+            if(result.isExceptional()) {
+                eventGateway.publish(new CustomerRentalRejectedEvent(customer));
+            }
+        });
     }
 
     @SagaEventHandler(associationProperty = "serialNumber")
