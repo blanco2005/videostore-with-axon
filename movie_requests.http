@@ -9,7 +9,7 @@ Accept: application/json
 
 ###
 
-PUT http://localhost:8081/movies/666?title=Startrek
+PUT http://localhost:8081/movies/666?title=Avengers
 Accept: application/json
 
 ###

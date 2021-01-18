@@ -47,4 +47,13 @@ public class MovieSummary {
   public void setNumberOfCopyAvailable(Integer numberOfCopyAvailable) {
     this.numberOfCopyAvailable = numberOfCopyAvailable;
   }
+
+  @Override
+  public String toString() {
+    return "MovieSummary{" +
+            "title='" + title + '\'' +
+            ", numberOfCopyTotal=" + numberOfCopyTotal +
+            ", numberOfCopyAvailable=" + numberOfCopyAvailable +
+            '}';
+  }
 }
