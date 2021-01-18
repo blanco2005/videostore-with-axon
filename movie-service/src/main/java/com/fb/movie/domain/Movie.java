@@ -1,4 +1,4 @@
-package com.fb.domain;
+package com.fb.movie.domain;
 
 import com.fb.videostore.*;
 import org.axonframework.commandhandling.CommandHandler;
