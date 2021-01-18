@@ -1,5 +1,6 @@
 package com.fb.videostore.controller;
 
+import com.fb.query.movie.MovieSummary;
 import com.fb.videostore.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class MovieController {
 
     @GetMapping("/movies")
     public ResponseEntity<String> moviesAvailability() {
-        List<Object> allMovieAvailability = movieService.getAllMovieAvailability();
+        List<MovieSummary> allMovieAvailability = movieService.getAllMovieAvailability();
         String result = allMovieAvailability.stream().map(m -> m.toString()).collect(joining("\n"));
         return ResponseEntity.ok(result);
     }
