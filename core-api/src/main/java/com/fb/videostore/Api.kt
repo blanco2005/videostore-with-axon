@@ -33,4 +33,4 @@ data class MovieReturnedToCatalogEvent(
         val title: String
 )
 
-data class AllCatalogQuery()
+class AllCatalogQuery()
