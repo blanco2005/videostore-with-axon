@@ -33,4 +33,14 @@ data class MovieReturnedToCatalogEvent(
         val title: String
 )
 
+data class CreateCustomerCommand(@TargetAggregateIdentifier val customerName: String)
+data class CustomerCreatedEvent(val customerName: String)
+
+data class RequestRentalToCustomerCommand(@TargetAggregateIdentifier val customerName: String)
+data class CustomerRentalApprovedEvent(val customerName: String)
+
+data class DecreaseRentalsCommand(@TargetAggregateIdentifier val customerName: String)
+data class CustomerDecreasedRentalsEvent(val customerName: String)
+
 class AllCatalogQuery()
+class AllCustomersSummaryQuery

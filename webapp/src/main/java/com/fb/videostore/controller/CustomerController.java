@@ -1,5 +1,6 @@
 package com.fb.videostore.controller;
 
+import com.fb.query.customer.CustomerSummary;
 import com.fb.videostore.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class CustomerController {
 
     @GetMapping("/customers")
     public ResponseEntity<String> getCustomers() {
-        List<Object> customers = customerService.getCustomers();
+        List<CustomerSummary> customers = customerService.getCustomers();
         String result = customers.stream().map(c -> c.toString()).collect(joining("\n"));
         return ResponseEntity.ok(result);
     }
